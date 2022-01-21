@@ -1,6 +1,6 @@
 const express = require("express");
 const detectImageLabel = require("../aws/imageDetect");
-const detectLabels = require("../gcp/imageDetect");
+// const detectLabels = require("../gcp/imageDetect");
 const router = express.Router();
 const dotenv = require("dotenv");
 
