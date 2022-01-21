@@ -1,12 +1,11 @@
 const vision = require("@google-cloud/vision");
-const clientSecret = require("./google-client-secret.json");
 
 async function detectLabels(buffer) {
   try {
     const config = {
       credentials: {
-        private_key: clientSecret.private_key,
-        client_email: clientSecret.client_email,
+        private_key: process.env.GOOGLE_PRIVARE_KEY?.replace(/\\n/g, "\n"),
+        client_email: process.env.GOOGLE_CLIENT_EMAIL,
       },
     };
     //setup client
