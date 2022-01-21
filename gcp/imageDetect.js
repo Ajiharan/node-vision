@@ -1,5 +1,6 @@
 const vision = require("@google-cloud/vision");
 const clientSecret = require("./google-client-secret.json");
+
 async function detectLabels(buffer) {
   try {
     const config = {
@@ -8,6 +9,7 @@ async function detectLabels(buffer) {
         client_email: clientSecret.client_email,
       },
     };
+    //setup client
     const client = new vision.ImageAnnotatorClient(config);
 
     // Performs label detection on the image file
@@ -16,11 +18,8 @@ async function detectLabels(buffer) {
 
     return labels;
   } catch (err) {
-    console.log(err);
+    throw err?.message;
   }
-  // Imports the Google Cloud client library
-
-  // Creates a client
 }
 
 module.exports = detectLabels;

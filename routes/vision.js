@@ -1,17 +1,28 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const detectImageLabel = require("../aws/imageDetect");
+const detectLabels = require("../gcp/imageDetect");
+const router = express.Router();
+const dotenv = require("dotenv");
 
-router.post('/classify', function(req, res, next) {
-  // DON'T return the hardcoded response after implementing the backend
-  let response = ["shoe", "red", "nike"];
+dotenv.config();
+router.post("/classify", async (req, res) => {
+  try {
+    const { data } = req.files.file;
 
-  // Your code starts here //
+    //------using google vision service--------
+    // const result = await detectLabels(data);
+    // const response = result?.map(({ description }) => description);
 
-  // Your code ends here //
-
-  res.json({
-    "labels": response
-  });
+    //-------using aws Rekognition service--------
+    const result = await detectImageLabel(data);
+    const response = result?.Labels.map(({ Name }) => Name);
+    return res.json({
+      labels: response,
+    });
+  } catch (err) {
+    // return res.status(400).json({ error: err||"Unable to process the request" });
+    return res.status(400).json({ error: "Unable to process the request" });
+  }
 });
 
 module.exports = router;
